@@ -6,11 +6,70 @@
 	<version>0.5.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>${project.artifactId}</name>
-	<description></description>
+	<description>Build weasis-ext.war file containing additional Weasis plug-ins.</description>
 
 	<scm>
 		<connection>scm:git:git@github.com:nroduit/weasis-plugins-war-builder.git</connection>
 		<developerConnection>scm:git:https://github.com/nroduit/weasis-plugins-war-builder.git</developerConnection>
 		<url>https://github.com/nroduit/weasis-plugins-war-builder</url>
 	</scm>
+
+	<repositories>
+		<repository>
+			<id>weasis</id>
+			<url>http://dicom.vital-it.ch:8087/nexus/content/groups/public</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>weasis</id>
+			<url>http://dicom.vital-it.ch:8087/nexus/content/groups/public</url>
+		</pluginRepository>
+	</pluginRepositories>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.8</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.weasis</groupId>
+									<artifactId>weasis-isowriter</artifactId>
+									<version>1.1</version>
+									<type>jar</type>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${project.build.directory}/plugins</outputDirectory>
+							<overWriteIfNewer>true</overWriteIfNewer>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+							<excludeTransitive>true</excludeTransitive>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<webResources>
+						<resource>
+							<directory>${project.build.directory}/plugins</directory>
+							<targetPath></targetPath>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
