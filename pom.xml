@@ -48,7 +48,7 @@
 								<artifactItem>
 									<groupId>org.weasis</groupId>
 									<artifactId>weasis-isowriter</artifactId>
-									<version>3.0.1</version>
+									<version>3.0.2</version>
 									<type>jar</type>
 								</artifactItem>
 							</artifactItems>
